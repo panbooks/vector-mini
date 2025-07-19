@@ -11,8 +11,6 @@ pub mod source;
 mod transform;
 mod uptime;
 
-#[cfg(feature = "sources-host_metrics")]
-mod host;
 
 pub use allocated_bytes::{AllocatedBytes, ComponentAllocatedBytes};
 use async_graphql::{Interface, Subscription};

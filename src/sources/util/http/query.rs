@@ -6,7 +6,7 @@ use vector_lib::{
     event::Event,
 };
 
-use crate::sources::http_server::HttpConfigParamKind;
+use crate::sources::ttp_server::HttpConfigParamKind;
 
 pub fn add_query_parameters(
     events: &mut [Event],
