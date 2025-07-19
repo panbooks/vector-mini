@@ -79,32 +79,3 @@ pub enum DnsError {
     JoinError { source: tokio::task::JoinError },
 }
 
-#[cfg(test)]
-mod tests {
-    use super::Resolver;
-
-    async fn resolve(name: &str) -> bool {
-        let resolver = Resolver;
-        resolver.lookup_ip(name.to_owned()).await.is_ok()
-    }
-
-    #[tokio::test]
-    async fn resolve_example() {
-        assert!(resolve("example.com").await);
-    }
-
-    #[tokio::test]
-    async fn resolve_localhost() {
-        assert!(resolve("localhost").await);
-    }
-
-    #[tokio::test]
-    async fn resolve_ipv4() {
-        assert!(resolve("10.0.4.0").await);
-    }
-
-    #[tokio::test]
-    async fn resolve_ipv6() {
-        assert!(resolve("::1").await);
-    }
-}

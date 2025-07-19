@@ -16,45 +16,6 @@ mod ready_arrays;
 mod running;
 mod task;
 
-#[cfg(test)]
-mod test;
-
-use std::{
-    panic::AssertUnwindSafe,
-    sync::{Arc, Mutex},
-};
-
-use futures::{Future, FutureExt};
-use tokio::sync::mpsc;
-use vector_lib::buffers::topology::channel::{BufferReceiverStream, BufferSender};
-
-pub use self::builder::TopologyPieces;
-pub use self::controller::{ReloadOutcome, SharedTopologyController, TopologyController};
-pub use self::running::{RunningTopology, ShutdownErrorReceiver};
-
-use self::task::{Task, TaskError, TaskResult};
-use crate::{
-    config::{ComponentKey, Config, ConfigDiff},
-    event::EventArray,
-    signal::ShutdownError,
-};
-
-type TaskHandle = tokio::task::JoinHandle<TaskResult>;
-
-type BuiltBuffer = (
-    BufferSender<EventArray>,
-    Arc<Mutex<Option<BufferReceiverStream<EventArray>>>>,
-);
-
-pub(super) fn take_healthchecks(
-    diff: &ConfigDiff,
-    pieces: &mut TopologyPieces,
-) -> Vec<(ComponentKey, Task)> {
-    (&diff.sinks.to_change | &diff.sinks.to_add)
-        .into_iter()
-        .filter_map(|id| pieces.healthchecks.remove(&id).map(move |task| (id, task)))
-        .collect()
-}
 
 async fn handle_errors(
     task: impl Future<Output = TaskResult>,

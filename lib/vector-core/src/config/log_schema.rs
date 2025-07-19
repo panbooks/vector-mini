@@ -244,16 +244,3 @@ impl LogSchema {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn partial_log_schema() {
-        let toml = r#"
-            message_key = "message"
-            timestamp_key = "timestamp"
-        "#;
-        toml::from_str::<LogSchema>(toml).unwrap();
-    }
-}

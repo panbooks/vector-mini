@@ -36,23 +36,6 @@ pub mod metric;
 pub mod proto;
 mod r#ref;
 mod ser;
-#[cfg(test)]
-mod test;
-mod trace;
-pub mod util;
-#[cfg(feature = "vrl")]
-mod vrl_target;
-
-pub const PARTIAL: &str = "_partial";
-
-#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-#[allow(clippy::large_enum_variant)]
-pub enum Event {
-    Log(LogEvent),
-    Metric(Metric),
-    Trace(TraceEvent),
-}
 
 impl ByteSizeOf for Event {
     fn allocated_bytes(&self) -> usize {

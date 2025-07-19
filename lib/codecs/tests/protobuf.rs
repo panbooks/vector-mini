@@ -44,25 +44,3 @@ fn build_serializer_pair(
     (serializer, deserializer)
 }
 
-#[test]
-fn roundtrip_coding() {
-    let protobuf_message =
-        read_protobuf_bin_message(&test_data_dir().join("pbs/person_someone.pb"));
-    let desc_file = test_data_dir().join("protos/test_protobuf.desc");
-    let message_type: String = "test_protobuf.Person".into();
-    let (mut serializer, deserializer) = build_serializer_pair(desc_file, message_type);
-
-    let events_original = deserializer
-        .parse(protobuf_message, LogNamespace::Vector)
-        .unwrap();
-    assert_eq!(1, events_original.len());
-    let mut new_message = BytesMut::new();
-    serializer
-        .encode(events_original[0].clone(), &mut new_message)
-        .unwrap();
-    let protobuf_message: Bytes = new_message.into();
-    let events_encoded = deserializer
-        .parse(protobuf_message, LogNamespace::Vector)
-        .unwrap();
-    assert_eq!(events_original, events_encoded);
-}

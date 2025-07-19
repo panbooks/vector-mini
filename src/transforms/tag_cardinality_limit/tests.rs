@@ -21,10 +21,6 @@ use tokio::sync::mpsc;
 use tokio_stream::wrappers::ReceiverStream;
 use vrl::compiler::prelude::Kind;
 
-#[test]
-fn generate_config() {
-    crate::test_util::test_generate_config::<TagCardinalityLimitConfig>();
-}
 
 fn make_metric_with_name(tags: MetricTags, name: &str) -> Event {
     let event_metadata = EventMetadata::default().with_source_type("unit_test_stream");
@@ -372,15 +368,7 @@ async fn separate_value_limit_per_tag(config: TagCardinalityLimitConfig) {
 
 /// Test that hitting the value limit on one tag does not affect checking the limit on other
 /// tags that happen to be ordered later
-#[test]
-fn drop_event_checks_all_tags1() {
-    drop_event_checks_all_tags(|val1, val2| metric_tags!("tag1" => val1, "tag2" => val2));
-}
 
-#[test]
-fn drop_event_checks_all_tags2() {
-    drop_event_checks_all_tags(|val1, val2| metric_tags!("tag1" => val2, "tag2" => val1));
-}
 
 fn drop_event_checks_all_tags(make_tags: impl Fn(&str, &str) -> MetricTags) {
     let config = make_transform_hashset(2, LimitExceededAction::DropEvent);

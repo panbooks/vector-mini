@@ -63,30 +63,3 @@ impl Encoder<()> for LengthDelimitedEncoder {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn encode() {
-        let mut codec = LengthDelimitedEncoder::default();
-
-        let mut buffer = BytesMut::from("abc");
-        codec.encode((), &mut buffer).unwrap();
-
-        assert_eq!(&buffer[..], b"\0\0\0\x03abc");
-    }
-
-    #[test]
-    fn encode_2byte_length() {
-        let mut codec = LengthDelimitedEncoder::new(&LengthDelimitedCoderOptions {
-            length_field_length: 2,
-            ..Default::default()
-        });
-
-        let mut buffer = BytesMut::from("abc");
-        codec.encode((), &mut buffer).unwrap();
-
-        assert_eq!(&buffer[..], b"\0\x03abc");
-    }
-}

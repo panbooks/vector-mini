@@ -38,28 +38,6 @@ pub mod serde;
 pub mod sink;
 pub mod source;
 pub mod tcp;
-#[cfg(test)]
-mod test_util;
-pub mod time;
-pub mod tls;
-pub mod transform;
-#[cfg(feature = "vrl")]
-pub mod vrl;
-
-use float_eq::FloatEq;
-use std::path::PathBuf;
-
-#[cfg(feature = "vrl")]
-pub use crate::vrl::compile_vrl;
-
-pub use event::EstimatedJsonEncodedSizeOf;
-
-#[macro_use]
-extern crate tracing;
-
-pub fn default_data_dir() -> Option<PathBuf> {
-    Some(PathBuf::from("/var/lib/vector/"))
-}
 
 pub(crate) use vector_common::{Error, Result};
 

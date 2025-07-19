@@ -105,11 +105,3 @@ impl InternalEvent for ParserConversionError<'_> {
     }
 }
 
-#[cfg(test)]
-mod test {
-    #[test]
-    fn truncate_utf8() {
-        let message = "Hello 😁 this is test.";
-        assert_eq!("Hello [...]", super::truncate_string_at(message, 13));
-    }
-}

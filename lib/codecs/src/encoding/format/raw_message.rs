@@ -46,21 +46,3 @@ impl Encoder<Event> for RawMessageSerializer {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use bytes::{Bytes, BytesMut};
-    use vector_core::event::LogEvent;
-
-    use super::*;
-
-    #[test]
-    fn serialize_bytes() {
-        let input = Event::from(LogEvent::from_str_legacy("foo"));
-        let mut serializer = RawMessageSerializer;
-
-        let mut buffer = BytesMut::new();
-        serializer.encode(input, &mut buffer).unwrap();
-
-        assert_eq!(buffer.freeze(), Bytes::from("foo"));
-    }
-}

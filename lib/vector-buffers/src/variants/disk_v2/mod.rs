@@ -191,44 +191,6 @@ mod record;
 mod ser;
 mod writer;
 
-#[cfg(test)]
-mod tests;
-
-use self::ledger::Ledger;
-pub use self::{
-    common::{DiskBufferConfig, DiskBufferConfigBuilder},
-    io::{Filesystem, ProductionFilesystem},
-    ledger::LedgerLoadCreateError,
-    reader::{BufferReader, ReaderError},
-    writer::{BufferWriter, WriterError},
-};
-use crate::{
-    buffer_usage_data::BufferUsageHandle,
-    topology::{
-        builder::IntoBuffer,
-        channel::{ReceiverAdapter, SenderAdapter},
-    },
-    Bufferable,
-};
-
-/// Error that occurred when creating/loading a disk buffer.
-#[derive(Debug, Snafu)]
-pub enum BufferError<T>
-where
-    T: Bufferable,
-{
-    /// Failed to create/load the ledger.
-    #[snafu(display("failed to load/create ledger: {}", source))]
-    LedgerError { source: LedgerLoadCreateError },
-
-    /// Failed to initialize/catch the reader up to where it left off.
-    #[snafu(display("failed to seek to position where reader left off: {}", source))]
-    ReaderSeekFailed { source: ReaderError<T> },
-
-    /// Failed to initialize/catch the writer up to where it left off.
-    #[snafu(display("failed to seek to position where writer left off: {}", source))]
-    WriterSeekFailed { source: WriterError<T> },
-}
 
 /// Helper type for creating a disk buffer.
 pub struct Buffer<T> {

@@ -4,39 +4,6 @@ pub mod find_enrichment_table_records;
 pub mod get_enrichment_table_record;
 pub mod tables;
 
-#[cfg(test)]
-mod test_util;
-mod vrl_util;
-
-use dyn_clone::DynClone;
-pub use tables::{TableRegistry, TableSearch};
-use vrl::compiler::Function;
-use vrl::value::{ObjectMap, Value};
-
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-pub struct IndexHandle(pub usize);
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum Condition<'a> {
-    /// Condition exactly matches the field value.
-    Equals { field: &'a str, value: Value },
-    /// The date in the field is between from and to (inclusive).
-    BetweenDates {
-        field: &'a str,
-        from: chrono::DateTime<chrono::Utc>,
-        to: chrono::DateTime<chrono::Utc>,
-    },
-    /// The date in the field is greater than or equal to `from`.
-    FromDate {
-        field: &'a str,
-        from: chrono::DateTime<chrono::Utc>,
-    },
-    /// The date in the field is less than or equal to `to`.
-    ToDate {
-        field: &'a str,
-        to: chrono::DateTime<chrono::Utc>,
-    },
-}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Case {

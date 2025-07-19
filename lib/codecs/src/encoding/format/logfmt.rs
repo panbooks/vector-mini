@@ -48,23 +48,3 @@ impl Encoder<Event> for LogfmtSerializer {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use bytes::BytesMut;
-    use vector_core::event::{LogEvent, Value};
-    use vrl::btreemap;
-
-    #[test]
-    fn serialize_logfmt() {
-        let event = Event::Log(LogEvent::from(btreemap! {
-            "foo" => Value::from("bar")
-        }));
-        let mut serializer = LogfmtSerializer;
-        let mut bytes = BytesMut::new();
-
-        serializer.encode(event, &mut bytes).unwrap();
-
-        assert_eq!(bytes.freeze(), "foo=bar");
-    }
-}

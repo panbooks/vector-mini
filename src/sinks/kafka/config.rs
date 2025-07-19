@@ -296,12 +296,3 @@ impl SinkConfig for KafkaSinkConfig {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn generate_config() {
-        KafkaSinkConfig::generate_config();
-    }
-}

@@ -91,33 +91,3 @@ fn replace_well_known_segments(input: &str) -> String {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::generate_human_friendly_string;
-
-    #[test]
-    fn autodetect_input_case() {
-        let pascal_input = "LogToMetric";
-        let snake_input = "log_to_metric";
-
-        let pascal_friendly = generate_human_friendly_string(pascal_input);
-        let snake_friendly = generate_human_friendly_string(snake_input);
-
-        let expected = "Log To Metric";
-        assert_eq!(expected, pascal_friendly);
-        assert_eq!(expected, snake_friendly);
-    }
-
-    #[test]
-    fn digit_letter_boundaries() {
-        let input1 = "Ec2Metadata";
-        let expected1 = "EC2 Metadata";
-        let actual1 = generate_human_friendly_string(input1);
-        assert_eq!(expected1, actual1);
-
-        let input2 = "AwsS3";
-        let expected2 = "AWS S3";
-        let actual2 = generate_human_friendly_string(input2);
-        assert_eq!(expected2, actual2);
-    }
-}

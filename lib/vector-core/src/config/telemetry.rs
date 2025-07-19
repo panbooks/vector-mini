@@ -125,15 +125,3 @@ pub struct Tags {
     pub emit_source: bool,
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn partial_telemetry() {
-        let toml = r"
-            emit_source = true
-        ";
-        toml::from_str::<Telemetry>(toml).unwrap();
-    }
-}

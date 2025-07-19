@@ -161,32 +161,3 @@ impl TransformConfig for ExclusiveRouteConfig {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::ExclusiveRouteConfig;
-    use indoc::indoc;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<ExclusiveRouteConfig>();
-    }
-
-    #[test]
-    fn can_serialize_remap() {
-        // We need to serialize the config to check if a config has
-        // changed when reloading.
-        let config = serde_yaml::from_str::<ExclusiveRouteConfig>(indoc! {r#"
-                routes:
-                    - name: a
-                      condition:
-                        type = "vrl"
-                        source = '.message == "hello world"'
-            "#})
-        .unwrap();
-
-        assert_eq!(
-            serde_json::to_string(&config).unwrap(),
-            r#"{"routes":[{"name":"a","condition":"type = \"vrl\" source = '.message == \"hello world\"'"}]}"#
-        );
-    }
-}

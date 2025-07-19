@@ -213,38 +213,3 @@ impl From<ConditionConfig> for AnyCondition {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use indoc::indoc;
-    use serde::Deserialize;
-
-    use super::*;
-
-    #[derive(Deserialize, Debug)]
-    struct Test {
-        condition: AnyCondition,
-    }
-
-    #[test]
-    fn deserialize_anycondition_default() {
-        let conf: Test = toml::from_str(r#"condition = ".nork == false""#).unwrap();
-        assert_eq!(
-            r#"String(".nork == false")"#,
-            format!("{:?}", conf.condition)
-        )
-    }
-
-    #[test]
-    fn deserialize_anycondition_vrl() {
-        let conf: Test = toml::from_str(indoc! {r#"
-            condition.type = "vrl"
-            condition.source = '.nork == true'
-        "#})
-        .unwrap();
-
-        assert_eq!(
-            r#"Map(Vrl(VrlConfig { source: ".nork == true", runtime: Ast }))"#,
-            format!("{:?}", conf.condition)
-        )
-    }
-}

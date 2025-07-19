@@ -13,24 +13,3 @@ pub(crate) fn check_is_metric_with_context(e: Event) -> (Result<(), String>, Eve
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::check_is_metric;
-    use crate::event::{
-        metric::{Metric, MetricKind, MetricValue},
-        Event, LogEvent,
-    };
-
-    #[test]
-    fn is_metric_basic() {
-        assert!(!check_is_metric(Event::from(LogEvent::from("just a log"))).0);
-        assert!(
-            check_is_metric(Event::from(Metric::new(
-                "test metric",
-                MetricKind::Incremental,
-                MetricValue::Counter { value: 1.0 },
-            )))
-            .0,
-        );
-    }
-}

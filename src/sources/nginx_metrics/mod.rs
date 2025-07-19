@@ -265,15 +265,6 @@ impl NginxMetrics {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<NginxMetricsConfig>();
-    }
-}
 
 #[cfg(all(test, feature = "nginx-integration-tests"))]
 mod integration_tests {

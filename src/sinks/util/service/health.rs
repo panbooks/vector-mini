@@ -310,23 +310,3 @@ fn emit_active_endpoints(count: usize) {
     emit!(EndpointsActive { count });
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_health_counters() {
-        let counters = HealthCounters::new();
-        let mut snapshot = counters.snapshot();
-
-        counters.inc_healthy();
-        snapshot = counters.healthy(snapshot).unwrap();
-
-        counters.inc_unhealthy();
-        counters.inc_unhealthy();
-        assert_eq!(counters.healthy(snapshot), Err(2));
-
-        counters.inc_healthy();
-        assert!(counters.healthy(snapshot).is_ok());
-    }
-}

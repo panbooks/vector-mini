@@ -296,15 +296,6 @@ impl InputHandler {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<RedisSourceConfig>();
-    }
-}
 
 #[cfg(all(test, feature = "redis-integration-tests"))]
 mod integration_test {

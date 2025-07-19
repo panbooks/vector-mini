@@ -16,19 +16,6 @@ use crate::{
     metadata_ext::PortableFileExt,
     FilePosition, ReadFrom,
 };
-#[cfg(test)]
-mod tests;
-
-/// The `RawLine` struct is a thin wrapper around the bytes that have been read
-/// in order to retain the context of where in the file they have been read from.
-///
-/// The offset field contains the byte offset of the beginning of the line within
-/// the file that it was read from.
-#[derive(Debug)]
-pub(super) struct RawLine {
-    pub offset: u64,
-    pub bytes: Bytes,
-}
 
 #[derive(Debug)]
 pub struct RawLineResult {

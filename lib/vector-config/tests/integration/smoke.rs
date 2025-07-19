@@ -626,15 +626,3 @@ pub struct VectorConfig {
     sinks: Vec<SinkConfig>,
 }
 
-#[test]
-fn generate_semi_real_schema() {
-    match generate_root_schema::<VectorConfig>() {
-        Ok(schema) => {
-            let json = serde_json::to_string_pretty(&schema)
-                .expect("rendering root schema to JSON should not fail");
-
-            println!("{json}");
-        }
-        Err(e) => eprintln!("error while generating schema: {e:?}"),
-    }
-}

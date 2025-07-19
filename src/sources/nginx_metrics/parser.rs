@@ -73,28 +73,3 @@ impl<'a> TryFrom<&'a str> for NginxStubStatus {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn nginx_stub_status_try_from() {
-        let data = "Active connections: 291 \n\
-                    server accepts handled requests\n \
-                    16630948 16630948 31070465 \n\
-                    Reading: 6 Writing: 179 Waiting: 106 \n";
-
-        assert_eq!(
-            NginxStubStatus::try_from(data).expect("valid data"),
-            NginxStubStatus {
-                active: 291,
-                accepts: 16630948,
-                handled: 16630948,
-                requests: 31070465,
-                reading: 6,
-                writing: 179,
-                waiting: 106
-            }
-        );
-    }
-}

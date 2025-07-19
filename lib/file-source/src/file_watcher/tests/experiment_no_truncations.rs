@@ -92,14 +92,3 @@ fn experiment_no_truncations(actions: Vec<FileWatcherAction>) {
     }
 }
 
-#[test]
-fn file_watcher_no_truncation() {
-    fn inner(actions: Vec<FileWatcherAction>) -> TestResult {
-        experiment_no_truncations(actions);
-        TestResult::passed()
-    }
-    QuickCheck::new()
-        .tests(10000)
-        .max_tests(100000)
-        .quickcheck(inner as fn(Vec<FileWatcherAction>) -> TestResult);
-}

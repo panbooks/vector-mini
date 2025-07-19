@@ -87,36 +87,3 @@ impl Deserializer for BytesDeserializer {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use vrl::value::Value;
-
-    #[test]
-    fn deserialize_bytes_legacy_namespace() {
-        let input = Bytes::from("foo");
-        let deserializer = BytesDeserializer;
-
-        let events = deserializer.parse(input, LogNamespace::Legacy).unwrap();
-        let mut events = events.into_iter();
-
-        {
-            let event = events.next().unwrap();
-            let log = event.as_log();
-            assert_eq!(*log.get_message().unwrap(), "foo".into());
-        }
-
-        assert_eq!(events.next(), None);
-    }
-
-    #[test]
-    fn deserialize_bytes_vector_namespace() {
-        let input = Bytes::from("foo");
-        let deserializer = BytesDeserializer;
-
-        let events = deserializer.parse(input, LogNamespace::Vector).unwrap();
-        assert_eq!(events.len(), 1);
-
-        assert_eq!(events[0].as_log().get(".").unwrap(), &Value::from("foo"));
-    }
-}

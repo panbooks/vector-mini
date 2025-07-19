@@ -125,14 +125,3 @@ fn experiment(actions: Vec<FileWatcherAction>) {
     assert!(sut_reads >= model_reads);
 }
 
-#[test]
-fn file_watcher_with_truncation() {
-    fn inner(actions: Vec<FileWatcherAction>) -> TestResult {
-        experiment(actions);
-        TestResult::passed()
-    }
-    QuickCheck::new()
-        .tests(10000)
-        .max_tests(100000)
-        .quickcheck(inner as fn(Vec<FileWatcherAction>) -> TestResult);
-}

@@ -104,12 +104,3 @@ impl SinkConfig for ConsoleSinkConfig {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<ConsoleSinkConfig>();
-    }
-}

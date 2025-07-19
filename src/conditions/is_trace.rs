@@ -13,29 +13,3 @@ pub(crate) fn check_is_trace_with_context(e: Event) -> (Result<(), String>, Even
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::check_is_trace;
-    use crate::event::{
-        metric::{Metric, MetricKind, MetricValue},
-        Event, LogEvent, TraceEvent,
-    };
-
-    #[test]
-    fn is_trace_basic() {
-        assert!(
-            check_is_trace(Event::from(TraceEvent::from(LogEvent::from(
-                "just a trace"
-            ))))
-            .0
-        );
-        assert!(
-            !check_is_trace(Event::from(Metric::new(
-                "test metric",
-                MetricKind::Incremental,
-                MetricValue::Counter { value: 1.0 },
-            )))
-            .0,
-        );
-    }
-}

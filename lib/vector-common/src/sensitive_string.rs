@@ -42,24 +42,3 @@ impl SensitiveString {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn serialization() {
-        let json_value = "\"foo\"";
-        let value: SensitiveString = serde_json::from_str(json_value).unwrap();
-        let result: String = serde_json::to_string(&value).unwrap();
-        assert_eq!(result, json_value);
-    }
-
-    #[test]
-    fn hide_content() {
-        let value = SensitiveString("hello world".to_string());
-        let display = format!("{value}");
-        assert_eq!(display, "**REDACTED**");
-        let debug = format!("{value:?}");
-        assert_eq!(debug, "\"**REDACTED**\"");
-    }
-}

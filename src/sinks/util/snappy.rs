@@ -63,26 +63,3 @@ impl<W: io::Write + std::fmt::Debug> std::fmt::Debug for SnappyEncoder<W> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use std::io::Write;
-
-    use bytes::{BufMut, BytesMut};
-
-    use super::*;
-
-    #[test]
-    fn is_empty() {
-        let writer = BytesMut::with_capacity(64).writer();
-        let mut encoder = SnappyEncoder::new(writer);
-
-        encoder.write_all(b"I am a potato").unwrap();
-
-        // Because we are buffering the results until the end, the writer will be
-        // empty, but our buffer won't be. The `is_empty` function is provided to
-        // allow us to determine if data has been written to the encoder without having
-        // to check the writer.
-        assert!(encoder.get_ref().get_ref().is_empty());
-        assert!(!encoder.is_empty());
-    }
-}

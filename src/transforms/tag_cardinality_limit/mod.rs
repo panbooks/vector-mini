@@ -15,20 +15,6 @@ use crate::{
 mod config;
 mod tag_value_set;
 
-#[cfg(test)]
-mod tests;
-
-use crate::event::metric::TagValueSet;
-pub use config::{TagCardinalityLimitConfig, TagCardinalityLimitInnerConfig};
-use tag_value_set::AcceptedTagValueSet;
-
-type MetricId = (Option<String>, String);
-
-#[derive(Debug)]
-pub struct TagCardinalityLimit {
-    config: TagCardinalityLimitConfig,
-    accepted_tags: HashMap<Option<MetricId>, HashMap<String, AcceptedTagValueSet>>,
-}
 
 impl TagCardinalityLimit {
     fn new(config: TagCardinalityLimitConfig) -> Self {

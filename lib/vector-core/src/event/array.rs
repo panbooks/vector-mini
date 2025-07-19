@@ -5,49 +5,6 @@
 use std::{iter, slice, sync::Arc, vec};
 
 use futures::{stream, Stream};
-#[cfg(test)]
-use quickcheck::{Arbitrary, Gen};
-use vector_buffers::EventCount;
-use vector_common::{
-    byte_size_of::ByteSizeOf,
-    config::ComponentKey,
-    finalization::{AddBatchNotifier, BatchNotifier, EventFinalizers, Finalizable},
-    json_size::JsonSize,
-};
-
-use super::{
-    EstimatedJsonEncodedSizeOf, Event, EventDataEq, EventFinalizer, EventMutRef, EventRef,
-    LogEvent, Metric, TraceEvent,
-};
-
-/// The type alias for an array of `LogEvent` elements.
-pub type LogArray = Vec<LogEvent>;
-
-/// The type alias for an array of `TraceEvent` elements.
-pub type TraceArray = Vec<TraceEvent>;
-
-/// The type alias for an array of `Metric` elements.
-pub type MetricArray = Vec<Metric>;
-
-/// The core trait to abstract over any type that may work as an array
-/// of events. This is effectively the same as the standard
-/// `IntoIterator<Item = Event>` implementations, but that would
-/// conflict with the base implementation for the type aliases below.
-pub trait EventContainer: ByteSizeOf + EstimatedJsonEncodedSizeOf {
-    /// The type of `Iterator` used to turn this container into events.
-    type IntoIter: Iterator<Item = Event>;
-
-    /// The number of events in this container.
-    fn len(&self) -> usize;
-
-    /// Is this container empty?
-    fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-
-    /// Turn this container into an iterator over `Event`.
-    fn into_events(self) -> Self::IntoIter;
-}
 
 /// Turn a container into a futures stream over the contained `Event`
 /// type.  This would ideally be implemented as a default method on
@@ -326,36 +283,6 @@ impl Finalizable for EventArray {
     }
 }
 
-#[cfg(test)]
-impl Arbitrary for EventArray {
-    fn arbitrary(g: &mut Gen) -> Self {
-        let len = u8::arbitrary(g) as usize;
-        let choice: u8 = u8::arbitrary(g);
-        // Quickcheck can't derive Arbitrary for enums, see
-        // https://github.com/BurntSushi/quickcheck/issues/98
-        if choice % 2 == 0 {
-            let mut logs = Vec::new();
-            for _ in 0..len {
-                logs.push(LogEvent::arbitrary(g));
-            }
-            EventArray::Logs(logs)
-        } else {
-            let mut metrics = Vec::new();
-            for _ in 0..len {
-                metrics.push(Metric::arbitrary(g));
-            }
-            EventArray::Metrics(metrics)
-        }
-    }
-
-    fn shrink(&self) -> Box<dyn Iterator<Item = Self>> {
-        match self {
-            EventArray::Logs(logs) => Box::new(logs.shrink().map(EventArray::Logs)),
-            EventArray::Metrics(metrics) => Box::new(metrics.shrink().map(EventArray::Metrics)),
-            EventArray::Traces(traces) => Box::new(traces.shrink().map(EventArray::Traces)),
-        }
-    }
-}
 
 /// The iterator type for `EventArray::iter_events`.
 #[derive(Debug)]

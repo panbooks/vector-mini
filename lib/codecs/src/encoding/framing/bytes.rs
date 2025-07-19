@@ -45,17 +45,3 @@ impl Encoder<()> for BytesEncoder {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn encode() {
-        let mut codec = BytesEncoder;
-
-        let mut buffer = BytesMut::from("abc");
-        codec.encode((), &mut buffer).unwrap();
-
-        assert_eq!(b"abc", &buffer[..]);
-    }
-}

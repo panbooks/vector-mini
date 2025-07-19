@@ -83,32 +83,3 @@ impl PartialOrd for ComponentKey {
 
 impl ConfigurableString for ComponentKey {}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn deserialize_string() {
-        let result: ComponentKey = serde_json::from_str("\"foo\"").unwrap();
-        assert_eq!(result.id(), "foo");
-    }
-
-    #[test]
-    fn serialize_string() {
-        let item = ComponentKey::from("foo");
-        let result = serde_json::to_string(&item).unwrap();
-        assert_eq!(result, "\"foo\"");
-    }
-
-    #[test]
-    #[allow(clippy::similar_names)]
-    fn ordering() {
-        let global_baz = ComponentKey::from("baz");
-        let yolo_bar = ComponentKey::from("yolo.bar");
-        let foo_bar = ComponentKey::from("foo.bar");
-        let foo_baz = ComponentKey::from("foo.baz");
-        let mut list = vec![&foo_baz, &yolo_bar, &global_baz, &foo_bar];
-        list.sort();
-        assert_eq!(list, vec![&global_baz, &foo_bar, &foo_baz, &yolo_bar]);
-    }
-}

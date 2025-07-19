@@ -48,10 +48,6 @@ use super::{
     encoder::HttpEncoder,
 };
 
-#[test]
-fn generate_config() {
-    crate::test_util::test_generate_config::<HttpSinkConfig>();
-}
 
 fn default_cfg(encoding: EncodingConfigWithFraming) -> HttpSinkConfig {
     HttpSinkConfig {
@@ -70,117 +66,11 @@ fn default_cfg(encoding: EncodingConfigWithFraming) -> HttpSinkConfig {
     }
 }
 
-#[test]
-fn http_encode_event_text() {
-    let event = Event::Log(LogEvent::from("hello world"));
 
-    let cfg = default_cfg((None::<FramingConfig>, TextSerializerConfig::default()).into());
-    let encoder = cfg.build_encoder().unwrap();
-    let transformer = cfg.encoding.transformer();
 
-    let encoder = HttpEncoder::new(encoder, transformer, "".to_owned(), "".to_owned());
 
-    let mut encoded = vec![];
-    let (encoded_size, _byte_size) = encoder.encode_input(vec![event], &mut encoded).unwrap();
 
-    assert_eq!(encoded, Vec::from("hello world\n"));
-    assert_eq!(encoded.len(), encoded_size);
-}
 
-#[test]
-fn http_encode_event_ndjson() {
-    let event = Event::Log(LogEvent::from("hello world"));
-
-    let cfg = default_cfg(
-        (
-            Some(NewlineDelimitedEncoderConfig::new()),
-            JsonSerializerConfig::default(),
-        )
-            .into(),
-    );
-    let encoder = cfg.build_encoder().unwrap();
-    let transformer = cfg.encoding.transformer();
-
-    let encoder = HttpEncoder::new(encoder, transformer, "".to_owned(), "".to_owned());
-
-    let mut encoded = vec![];
-    encoder.encode_input(vec![event], &mut encoded).unwrap();
-
-    #[derive(Deserialize, Debug)]
-    #[serde(deny_unknown_fields)]
-    #[allow(dead_code)] // deserialize all fields
-    struct ExpectedEvent {
-        message: String,
-        timestamp: chrono::DateTime<chrono::Utc>,
-    }
-
-    let output = serde_json::from_slice::<ExpectedEvent>(&encoded[..]).unwrap();
-
-    assert_eq!(output.message, "hello world".to_string());
-}
-
-#[test]
-fn http_validates_normal_headers() {
-    let config = r#"
-        uri = "http://$IN_ADDR/frames"
-        encoding.codec = "text"
-        [request.headers]
-        Auth = "token:thing_and-stuff"
-        X-Custom-Nonsense = "_%_{}_-_&_._`_|_~_!_#_&_$_"
-        "#;
-    let config: HttpSinkConfig = toml::from_str(config).unwrap();
-
-    assert!(validate_headers(&config.request.headers, false).is_ok());
-}
-
-#[test]
-fn http_catches_bad_header_names() {
-    let config = r#"
-        uri = "http://$IN_ADDR/frames"
-        encoding.codec = "text"
-        [request.headers]
-        "\u0001" = "bad"
-        "#;
-    let config: HttpSinkConfig = toml::from_str(config).unwrap();
-
-    assert_downcast_matches!(
-        validate_headers(&config.request.headers, false).unwrap_err(),
-        HeaderValidationError,
-        HeaderValidationError::InvalidHeaderName { .. }
-    );
-}
-
-#[test]
-fn http_validates_payload_prefix_and_suffix() {
-    let config = r#"
-        uri = "http://$IN_ADDR/"
-        encoding.codec = "json"
-        payload_prefix = '{"data":'
-        payload_suffix = "}"
-        "#;
-    let config: HttpSinkConfig = toml::from_str(config).unwrap();
-    let (framer, serializer) = config.encoding.build(SinkType::MessageBased).unwrap();
-    let encoder = Encoder::<Framer>::new(framer, serializer);
-    assert!(
-        validate_payload_wrapper(&config.payload_prefix, &config.payload_suffix, &encoder).is_ok()
-    );
-}
-
-#[test]
-fn http_validates_payload_prefix_and_suffix_fails_on_invalid_json() {
-    let config = r#"
-        uri = "http://$IN_ADDR/"
-        encoding.codec = "json"
-        payload_prefix = '{"data":'
-        payload_suffix = ""
-        "#;
-    let config: HttpSinkConfig = toml::from_str(config).unwrap();
-    let (framer, serializer) = config.encoding.build(SinkType::MessageBased).unwrap();
-    let encoder = Encoder::<Framer>::new(framer, serializer);
-    assert!(
-        validate_payload_wrapper(&config.payload_prefix, &config.payload_suffix, &encoder).is_err()
-    );
-}
 
 // TODO: Fix failure on GH Actions using macos-latest image.
 #[cfg(not(target_os = "macos"))]

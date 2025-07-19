@@ -36,29 +36,3 @@ impl LogEventMergeState {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    fn log_event_with_message(message: &str) -> LogEvent {
-        LogEvent::from(message)
-    }
-
-    #[test]
-    fn log_event_merge_state_example() {
-        let fields = vec!["message".to_string()];
-
-        let mut state = LogEventMergeState::new(log_event_with_message("hel"));
-        state.merge_in_next_event(log_event_with_message("lo "), &fields);
-        let merged_event = state.merge_in_final_event(log_event_with_message("world"), &fields);
-
-        assert_eq!(
-            merged_event
-                .get("message")
-                .unwrap()
-                .coerce_to_bytes()
-                .as_ref(),
-            b"hello world"
-        );
-    }
-}

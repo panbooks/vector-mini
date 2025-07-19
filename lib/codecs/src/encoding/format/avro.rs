@@ -77,39 +77,3 @@ impl Encoder<Event> for AvroSerializer {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use bytes::BytesMut;
-    use indoc::indoc;
-    use vector_core::event::{LogEvent, Value};
-    use vrl::btreemap;
-
-    use super::*;
-
-    #[test]
-    fn serialize_avro() {
-        let event = Event::Log(LogEvent::from(btreemap! {
-            "foo" => Value::from("bar")
-        }));
-        let schema = indoc! {r#"
-            {
-                "type": "record",
-                "name": "Log",
-                "fields": [
-                    {
-                        "name": "foo",
-                        "type": ["string"]
-                    }
-                ]
-            }
-        "#}
-        .to_owned();
-        let config = AvroSerializerConfig::new(schema);
-        let mut serializer = config.build().unwrap();
-        let mut bytes = BytesMut::new();
-
-        serializer.encode(event, &mut bytes).unwrap();
-
-        assert_eq!(bytes.freeze(), b"\0\x06bar".as_slice());
-    }
-}

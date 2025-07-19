@@ -9,35 +9,6 @@ use tower::timeout::error::Elapsed;
 use vector_lib::internal_event::{InternalEventHandle as _, Registered};
 
 use super::{instant_now, semaphore::ShrinkableSemaphore, AdaptiveConcurrencySettings};
-#[cfg(test)]
-use crate::test_util::stats::{TimeHistogram, TimeWeightedSum};
-use crate::{
-    http::HttpError,
-    internal_events::{
-        AdaptiveConcurrencyAveragedRtt, AdaptiveConcurrencyInFlight, AdaptiveConcurrencyLimit,
-        AdaptiveConcurrencyLimitData, AdaptiveConcurrencyObservedRtt,
-    },
-    sinks::util::retries::{RetryAction, RetryLogic},
-    stats::{EwmaVar, Mean, MeanVariance},
-};
-
-/// Shared class for `tokio::sync::Semaphore` that manages adjusting the
-/// semaphore size and other associated data.
-#[derive(Clone)]
-pub(super) struct Controller<L> {
-    semaphore: Arc<ShrinkableSemaphore>,
-    concurrency: Option<usize>,
-    settings: AdaptiveConcurrencySettings,
-    logic: L,
-    pub(super) inner: Arc<Mutex<Inner>>,
-    #[cfg(test)]
-    pub(super) stats: Arc<Mutex<ControllerStatistics>>,
-
-    limit: Registered<AdaptiveConcurrencyLimit>,
-    in_flight: Registered<AdaptiveConcurrencyInFlight>,
-    observed_rtt: Registered<AdaptiveConcurrencyObservedRtt>,
-    averaged_rtt: Registered<AdaptiveConcurrencyAveragedRtt>,
-}
 
 #[derive(Debug)]
 pub(super) struct Inner {
@@ -50,14 +21,6 @@ pub(super) struct Inner {
     reached_limit: bool,
 }
 
-#[cfg(test)]
-#[derive(Debug, Default)]
-pub(super) struct ControllerStatistics {
-    pub(super) in_flight: TimeHistogram,
-    pub(super) concurrency_limit: TimeHistogram,
-    pub(super) observed_rtt: TimeWeightedSum,
-    pub(super) averaged_rtt: TimeWeightedSum,
-}
 
 impl<L> Controller<L> {
     pub(super) fn new(

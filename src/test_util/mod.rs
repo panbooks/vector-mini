@@ -42,46 +42,6 @@ use vector_lib::{
     buffers::topology::channel::LimitedReceiver,
     event::{Metric, MetricKind},
 };
-#[cfg(test)]
-use zstd::Decoder as ZstdDecoder;
-
-use crate::{
-    config::{Config, GenerateConfig},
-    topology::{RunningTopology, ShutdownErrorReceiver},
-    trace,
-};
-
-const WAIT_FOR_SECS: u64 = 5; // The default time to wait in `wait_for`
-const WAIT_FOR_MIN_MILLIS: u64 = 5; // The minimum time to pause before retrying
-const WAIT_FOR_MAX_MILLIS: u64 = 500; // The maximum time to pause before retrying
-
-#[cfg(any(test, feature = "test-utils"))]
-pub mod components;
-
-#[cfg(test)]
-pub mod http;
-
-#[cfg(test)]
-pub mod metrics;
-
-#[cfg(test)]
-pub mod mock;
-
-pub mod compression;
-pub mod stats;
-
-#[cfg(test)]
-pub mod integration;
-
-#[macro_export]
-macro_rules! assert_downcast_matches {
-    ($e:expr_2021, $t:ty, $v:pat) => {{
-        match $e.downcast_ref::<$t>() {
-            Some($v) => (),
-            got => panic!("Assertion failed: got wrong error variant {:?}", got),
-        }
-    }};
-}
 
 #[macro_export]
 macro_rules! log_event {
@@ -497,17 +457,6 @@ pub fn lines_from_gzip_file<P: AsRef<Path>>(path: P) -> Vec<String> {
     output.lines().map(|s| s.to_owned()).collect()
 }
 
-#[cfg(test)]
-pub fn lines_from_zstd_file<P: AsRef<Path>>(path: P) -> Vec<String> {
-    trace!(message = "Reading zstd file.", path = %path.as_ref().display());
-    let file = File::open(path).unwrap();
-    let mut output = String::new();
-    ZstdDecoder::new(file)
-        .unwrap()
-        .read_to_string(&mut output)
-        .unwrap();
-    output.lines().map(|s| s.to_owned()).collect()
-}
 
 pub fn runtime() -> runtime::Runtime {
     runtime::Builder::new_multi_thread()
@@ -780,33 +729,3 @@ where
     events
 }
 
-#[cfg(test)]
-mod tests {
-    use std::{
-        sync::{Arc, RwLock},
-        time::Duration,
-    };
-
-    use super::retry_until;
-
-    // helper which errors the first 3x, and succeeds on the 4th
-    async fn retry_until_helper(count: Arc<RwLock<i32>>) -> Result<(), ()> {
-        if *count.read().unwrap() < 3 {
-            let mut c = count.write().unwrap();
-            *c += 1;
-            return Err(());
-        }
-        Ok(())
-    }
-
-    #[tokio::test]
-    async fn retry_until_before_timeout() {
-        let count = Arc::new(RwLock::new(0));
-        let func = || {
-            let count = Arc::clone(&count);
-            retry_until_helper(count)
-        };
-
-        retry_until(func, Duration::from_millis(10), Duration::from_secs(1)).await;
-    }
-}

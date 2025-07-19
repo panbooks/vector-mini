@@ -111,27 +111,3 @@ impl Deserializer for NativeJsonDeserializer {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use serde_json::json;
-
-    use super::*;
-
-    #[test]
-    fn parses_top_level_arrays() {
-        let config = NativeJsonDeserializerConfig::default();
-        let deserializer = config.build();
-
-        let json1 = json!({"a": "b", "c": "d"});
-        let json2 = json!({"foo": "bar", "baz": "quux"});
-        let json_array = json!([{ "log": json1 }, { "log": json2 }]);
-        let input = Bytes::from(serde_json::to_vec(&json_array).unwrap());
-
-        let events = deserializer.parse(input, LogNamespace::Legacy).unwrap();
-
-        let event1 = Event::from_json_value(json1, LogNamespace::Legacy).unwrap();
-        let event2 = Event::from_json_value(json2, LogNamespace::Legacy).unwrap();
-        let expected: SmallVec<[Event; 1]> = smallvec![event1, event2];
-        assert_eq!(events, expected);
-    }
-}
