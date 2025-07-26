@@ -153,17 +153,10 @@ pub(crate) use self::apache_metrics::*;
 pub(crate) use self::api::*;
 #[cfg(feature = "aws-core")]
 pub(crate) use self::aws::*;
-#[cfg(feature = "sinks-aws_cloudwatch_logs")]
-pub(crate) use self::aws_cloudwatch_logs::*;
 #[cfg(feature = "transforms-aws_ec2_metadata")]
 pub(crate) use self::aws_ec2_metadata::*;
 #[cfg(feature = "sources-aws_ecs_metrics")]
 pub(crate) use self::aws_ecs_metrics::*;
-#[cfg(any(
-    feature = "sinks-aws_kinesis_streams",
-    feature = "sinks-aws_kinesis_firehose"
-))]
-pub(crate) use self::aws_kinesis::*;
 #[cfg(feature = "sources-aws_kinesis_firehose")]
 pub(crate) use self::aws_kinesis_firehose::*;
 #[cfg(any(feature = "sources-aws_s3", feature = "sources-aws_sqs",))]
@@ -171,10 +164,6 @@ pub(crate) use self::aws_sqs::*;
 pub(crate) use self::codecs::*;
 #[cfg(feature = "sources-datadog_agent")]
 pub(crate) use self::datadog_agent::*;
-#[cfg(feature = "sinks-datadog_metrics")]
-pub(crate) use self::datadog_metrics::*;
-#[cfg(feature = "sinks-datadog_traces")]
-pub(crate) use self::datadog_traces::*;
 #[cfg(feature = "transforms-impl-dedupe")]
 pub(crate) use self::dedupe::*;
 #[cfg(feature = "sources-demo_logs")]
@@ -207,8 +196,6 @@ pub(crate) use self::grpc::*;
 pub(crate) use self::host_metrics::*;
 #[cfg(feature = "sources-utils-http-client")]
 pub(crate) use self::http_client_source::*;
-#[cfg(feature = "sinks-influxdb")]
-pub(crate) use self::influxdb::*;
 #[cfg(feature = "sources-internal_logs")]
 pub(crate) use self::internal_logs::*;
 #[cfg(all(unix, feature = "sources-journald"))]
@@ -251,8 +238,6 @@ pub(crate) use self::reduce::*;
 pub(crate) use self::remap::*;
 #[cfg(feature = "transforms-impl-sample")]
 pub(crate) use self::sample::*;
-#[cfg(feature = "sinks-sematext")]
-pub(crate) use self::sematext_metrics::*;
 #[cfg(any(feature = "sources-splunk_hec", feature = "sinks-splunk_hec"))]
 pub(crate) use self::splunk_hec::*;
 #[cfg(feature = "sinks-statsd")]
