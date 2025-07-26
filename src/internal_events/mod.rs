@@ -137,16 +137,12 @@ pub(crate) use self::demo_logs::*;
     feature = "sinks-file",
 ))]
 pub(crate) use self::file::*;
-#[cfg(any(feature = "sources-file_descriptor", feature = "sources-stdin"))]
-pub(crate) use self::file_descriptor::*;
 #[cfg(feature = "transforms-filter")]
 pub(crate) use self::filter::*;
 #[cfg(any(feature = "sources-vector", feature = "sources-opentelemetry"))]
 pub(crate) use self::grpc::*;
 #[cfg(feature = "sources-host_metrics")]
 pub(crate) use self::host_metrics::*;
-#[cfg(all(unix, feature = "sources-journald"))]
-pub(crate) use self::journald::*;
 #[cfg(any(feature = "sources-kafka", feature = "sinks-kafka"))]
 pub(crate) use self::kafka::*;
 #[cfg(feature = "transforms-log_to_metric")]
@@ -157,8 +153,6 @@ pub(crate) use self::lua::*;
 pub(crate) use self::metric_to_log::*;
 #[allow(unused_imports)]
 pub(crate) use self::parser::*;
-#[cfg(feature = "sources-postgresql_metrics")]
-pub(crate) use self::postgresql_metrics::*;
 #[cfg(feature = "transforms-impl-reduce")]
 pub(crate) use self::reduce::*;
 #[cfg(feature = "transforms-remap")]
