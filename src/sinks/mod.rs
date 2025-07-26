@@ -5,8 +5,6 @@ use snafu::Snafu;
 pub mod prelude;
 pub mod util;
 
-#[cfg(feature = "sinks-axiom")]
-pub mod axiom;
 #[cfg(feature = "sinks-console")]
 pub mod console;
 #[cfg(feature = "sinks-file")]
@@ -15,28 +13,8 @@ pub mod file;
 pub mod http;
 #[cfg(feature = "sinks-kafka")]
 pub mod kafka;
-#[cfg(feature = "sinks-mezmo")]
-pub mod mezmo;
-#[cfg(feature = "sinks-new_relic")]
-pub mod new_relic;
-#[cfg(feature = "sinks-webhdfs")]
-pub mod opendal_common;
-#[cfg(feature = "sinks-papertrail")]
-pub mod papertrail;
-#[cfg(all(feature = "sinks-aws_s3", feature = "aws-core"))]
-pub mod s3_common;
-#[cfg(feature = "sinks-socket")]
-pub mod socket;
 #[cfg(feature = "sinks-splunk_hec")]
 pub mod splunk_hec;
-#[cfg(feature = "sinks-vector")]
-pub mod vector;
-#[cfg(feature = "sinks-webhdfs")]
-pub mod webhdfs;
-#[cfg(feature = "sinks-websocket")]
-pub mod websocket;
-#[cfg(feature = "sinks-websocket-server")]
-pub mod websocket_server;
 
 pub use vector_lib::{config::Input, sink::VectorSink};
 
