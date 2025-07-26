@@ -107,7 +107,6 @@ pub mod stats;
 #[allow(unreachable_pub)]
 pub mod tap;
 pub mod template;
-pub mod test_util;
 #[cfg(feature = "api-client")]
 #[allow(unreachable_pub)]
 pub mod top;
