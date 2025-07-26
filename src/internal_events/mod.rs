@@ -5,8 +5,6 @@ mod adaptive_concurrency;
 mod aggregate;
 #[cfg(any(feature = "sources-amqp", feature = "sinks-amqp"))]
 mod amqp;
-#[cfg(feature = "sources-apache_metrics")]
-mod apache_metrics;
 #[cfg(feature = "api")]
 mod api;
 #[cfg(feature = "aws-core")]
@@ -36,23 +34,15 @@ mod datadog_traces;
 mod dedupe;
 #[cfg(feature = "sources-demo_logs")]
 mod demo_logs;
-#[cfg(feature = "sources-dnstap")]
-mod dnstap;
 #[cfg(feature = "sources-docker_logs")]
 mod docker_logs;
 mod encoding_transcode;
 #[cfg(feature = "sources-eventstoredb_metrics")]
 mod eventstoredb_metrics;
-#[cfg(feature = "sources-exec")]
-mod exec;
 #[cfg(any(feature = "sources-file_descriptor", feature = "sources-stdin"))]
 mod file_descriptor;
 #[cfg(feature = "transforms-filter")]
 mod filter;
-#[cfg(feature = "sources-fluent")]
-mod fluent;
-#[cfg(feature = "sources-gcp_pubsub")]
-mod gcp_pubsub;
 #[cfg(any(feature = "sources-vector", feature = "sources-opentelemetry"))]
 mod grpc;
 mod heartbeat;
@@ -138,8 +128,6 @@ mod windows;
 pub(crate) use self::aggregate::*;
 #[cfg(feature = "sources-amqp")]
 pub(crate) use self::amqp::*;
-#[cfg(feature = "sources-apache_metrics")]
-pub(crate) use self::apache_metrics::*;
 #[cfg(feature = "api")]
 pub(crate) use self::api::*;
 #[cfg(feature = "aws-core")]
@@ -147,18 +135,10 @@ pub(crate) use self::aws::*;
 #[cfg(feature = "transforms-aws_ec2_metadata")]
 pub(crate) use self::aws_ec2_metadata::*;
 pub(crate) use self::codecs::*;
-#[cfg(feature = "sources-datadog_agent")]
-pub(crate) use self::datadog_agent::*;
 #[cfg(feature = "transforms-impl-dedupe")]
 pub(crate) use self::dedupe::*;
 #[cfg(feature = "sources-demo_logs")]
 pub(crate) use self::demo_logs::*;
-#[cfg(feature = "sources-dnstap")]
-pub(crate) use self::dnstap::*;
-#[cfg(feature = "sources-eventstoredb_metrics")]
-pub(crate) use self::eventstoredb_metrics::*;
-#[cfg(feature = "sources-exec")]
-pub(crate) use self::exec::*;
 #[cfg(any(
     feature = "sources-file",
     feature = "sources-kubernetes_logs",
@@ -169,10 +149,6 @@ pub(crate) use self::file::*;
 pub(crate) use self::file_descriptor::*;
 #[cfg(feature = "transforms-filter")]
 pub(crate) use self::filter::*;
-#[cfg(feature = "sources-fluent")]
-pub(crate) use self::fluent::*;
-#[cfg(feature = "sources-gcp_pubsub")]
-pub(crate) use self::gcp_pubsub::*;
 #[cfg(any(feature = "sources-vector", feature = "sources-opentelemetry"))]
 pub(crate) use self::grpc::*;
 #[cfg(feature = "sources-host_metrics")]
@@ -199,12 +175,6 @@ pub(crate) use self::metric_to_log::*;
 pub(crate) use self::parser::*;
 #[cfg(feature = "sources-postgresql_metrics")]
 pub(crate) use self::postgresql_metrics::*;
-#[cfg(any(
-    feature = "sources-prometheus-scrape",
-    feature = "sources-prometheus-remote-write",
-    feature = "sinks-prometheus"
-))]
-pub(crate) use self::prometheus::*;
 #[cfg(any(feature = "sinks-pulsar", feature = "sources-pulsar"))]
 pub(crate) use self::pulsar::*;
 #[cfg(feature = "sources-redis")]

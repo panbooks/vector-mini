@@ -3,18 +3,8 @@ use snafu::Snafu;
 
 #[cfg(feature = "sources-amqp")]
 pub mod amqp;
-#[cfg(feature = "sources-apache_metrics")]
-pub mod apache_metrics;
-#[cfg(feature = "sources-datadog_agent")]
-pub mod datadog_agent;
 #[cfg(feature = "sources-demo_logs")]
 pub mod demo_logs;
-#[cfg(feature = "sources-dnstap")]
-pub mod dnstap;
-#[cfg(feature = "sources-eventstoredb_metrics")]
-pub mod eventstoredb_metrics;
-#[cfg(feature = "sources-exec")]
-pub mod exec;
 #[cfg(feature = "sources-file")]
 pub mod file;
 #[cfg(any(
@@ -22,10 +12,6 @@ pub mod file;
     all(unix, feature = "sources-file_descriptor")
 ))]
 pub mod file_descriptors;
-#[cfg(feature = "sources-fluent")]
-pub mod fluent;
-#[cfg(feature = "sources-gcp_pubsub")]
-pub mod gcp_pubsub;
 #[cfg(feature = "sources-heroku_logs")]
 pub mod heroku_logs;
 #[cfg(feature = "sources-host_metrics")]
@@ -52,12 +38,6 @@ pub mod nats;
 pub mod opentelemetry;
 #[cfg(feature = "sources-postgresql_metrics")]
 pub mod postgresql_metrics;
-#[cfg(any(
-    feature = "sources-prometheus-scrape",
-    feature = "sources-prometheus-remote-write",
-    feature = "sources-prometheus-pushgateway"
-))]
-pub mod prometheus;
 #[cfg(feature = "sources-pulsar")]
 pub mod pulsar;
 #[cfg(feature = "sources-redis")]
