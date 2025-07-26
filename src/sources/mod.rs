@@ -1,8 +1,6 @@
 #![allow(missing_docs)]
 use snafu::Snafu;
 
-#[cfg(feature = "sources-amqp")]
-pub mod amqp;
 #[cfg(feature = "sources-demo_logs")]
 pub mod demo_logs;
 #[cfg(feature = "sources-file")]
@@ -12,16 +10,10 @@ pub mod file;
     all(unix, feature = "sources-file_descriptor")
 ))]
 pub mod file_descriptors;
-#[cfg(feature = "sources-heroku_logs")]
-pub mod heroku_logs;
 #[cfg(feature = "sources-host_metrics")]
 pub mod host_metrics;
-#[cfg(feature = "sources-http_client")]
-pub mod http_client;
 #[cfg(feature = "sources-http_server")]
 pub mod http_server;
-#[cfg(feature = "sources-internal_logs")]
-pub mod internal_logs;
 #[cfg(feature = "sources-internal_metrics")]
 pub mod internal_metrics;
 #[cfg(all(unix, feature = "sources-journald"))]
@@ -30,22 +22,14 @@ pub mod journald;
 pub mod kafka;
 #[cfg(feature = "sources-logstash")]
 pub mod logstash;
-#[cfg(feature = "sources-nats")]
-pub mod nats;
-#[cfg(feature = "sources-opentelemetry")]
-pub mod opentelemetry;
 #[cfg(feature = "sources-postgresql_metrics")]
 pub mod postgresql_metrics;
-#[cfg(feature = "sources-pulsar")]
-pub mod pulsar;
 #[cfg(feature = "sources-splunk_hec")]
 pub mod splunk_hec;
 #[cfg(feature = "sources-static_metrics")]
 pub mod static_metrics;
 #[cfg(feature = "sources-syslog")]
 pub mod syslog;
-#[cfg(feature = "sources-vector")]
-pub mod vector;
 
 pub mod util;
 

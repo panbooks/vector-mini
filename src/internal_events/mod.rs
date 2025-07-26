@@ -3,8 +3,6 @@ pub mod prelude;
 
 mod adaptive_concurrency;
 mod aggregate;
-#[cfg(any(feature = "sources-amqp", feature = "sinks-amqp"))]
-mod amqp;
 #[cfg(feature = "api")]
 mod api;
 #[cfg(feature = "aws-core")]
@@ -84,8 +82,6 @@ mod process;
     feature = "sinks-prometheus"
 ))]
 mod prometheus;
-#[cfg(any(feature = "sinks-pulsar", feature = "sources-pulsar"))]
-mod pulsar;
 #[cfg(feature = "sources-redis")]
 mod redis;
 #[cfg(feature = "transforms-impl-reduce")]
@@ -124,8 +120,6 @@ mod windows;
 
 #[cfg(feature = "transforms-aggregate")]
 pub(crate) use self::aggregate::*;
-#[cfg(feature = "sources-amqp")]
-pub(crate) use self::amqp::*;
 #[cfg(feature = "api")]
 pub(crate) use self::api::*;
 #[cfg(feature = "aws-core")]
@@ -151,18 +145,12 @@ pub(crate) use self::filter::*;
 pub(crate) use self::grpc::*;
 #[cfg(feature = "sources-host_metrics")]
 pub(crate) use self::host_metrics::*;
-#[cfg(feature = "sources-utils-http-client")]
-pub(crate) use self::http_client_source::*;
-#[cfg(feature = "sources-internal_logs")]
-pub(crate) use self::internal_logs::*;
 #[cfg(all(unix, feature = "sources-journald"))]
 pub(crate) use self::journald::*;
 #[cfg(any(feature = "sources-kafka", feature = "sinks-kafka"))]
 pub(crate) use self::kafka::*;
 #[cfg(feature = "transforms-log_to_metric")]
 pub(crate) use self::log_to_metric::*;
-#[cfg(feature = "sources-heroku_logs")]
-pub(crate) use self::logplex::*;
 #[cfg(feature = "transforms-lua")]
 pub(crate) use self::lua::*;
 #[cfg(feature = "transforms-metric_to_log")]
@@ -171,8 +159,6 @@ pub(crate) use self::metric_to_log::*;
 pub(crate) use self::parser::*;
 #[cfg(feature = "sources-postgresql_metrics")]
 pub(crate) use self::postgresql_metrics::*;
-#[cfg(any(feature = "sinks-pulsar", feature = "sources-pulsar"))]
-pub(crate) use self::pulsar::*;
 #[cfg(feature = "transforms-impl-reduce")]
 pub(crate) use self::reduce::*;
 #[cfg(feature = "transforms-remap")]

@@ -61,8 +61,6 @@ pub mod generate_schema;
 #[macro_use]
 #[allow(unreachable_pub)]
 pub mod internal_events;
-#[cfg(feature = "lapin")]
-pub mod amqp;
 #[cfg(feature = "api")]
 #[allow(unreachable_pub)]
 pub mod api;
@@ -89,8 +87,6 @@ pub mod kafka;
 pub mod kubernetes;
 pub mod line_agg;
 pub mod list;
-#[cfg(any(feature = "sources-nats", feature = "sinks-nats"))]
-pub(crate) mod nats;
 pub mod net;
 #[allow(unreachable_pub)]
 pub(crate) mod proto;
