@@ -5,8 +5,6 @@ use snafu::Snafu;
 pub mod prelude;
 pub mod util;
 
-#[cfg(feature = "sinks-amqp")]
-pub mod amqp;
 #[cfg(feature = "sinks-appsignal")]
 pub mod appsignal;
 #[cfg(feature = "sinks-aws_cloudwatch_logs")]
