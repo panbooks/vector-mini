@@ -28,8 +28,6 @@ pub mod internal_metrics;
 pub mod journald;
 #[cfg(feature = "sources-kafka")]
 pub mod kafka;
-#[cfg(feature = "sources-kubernetes_logs")]
-pub mod kubernetes_logs;
 #[cfg(feature = "sources-logstash")]
 pub mod logstash;
 #[cfg(feature = "sources-nats")]
@@ -40,16 +38,10 @@ pub mod opentelemetry;
 pub mod postgresql_metrics;
 #[cfg(feature = "sources-pulsar")]
 pub mod pulsar;
-#[cfg(feature = "sources-redis")]
-pub mod redis;
-#[cfg(feature = "sources-socket")]
-pub mod socket;
 #[cfg(feature = "sources-splunk_hec")]
 pub mod splunk_hec;
 #[cfg(feature = "sources-static_metrics")]
 pub mod static_metrics;
-#[cfg(feature = "sources-statsd")]
-pub mod statsd;
 #[cfg(feature = "sources-syslog")]
 pub mod syslog;
 #[cfg(feature = "sources-vector")]

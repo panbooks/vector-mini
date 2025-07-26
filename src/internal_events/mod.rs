@@ -60,8 +60,6 @@ mod internal_logs;
 mod journald;
 #[cfg(any(feature = "sources-kafka", feature = "sinks-kafka"))]
 mod kafka;
-#[cfg(feature = "sources-kubernetes_logs")]
-mod kubernetes_logs;
 #[cfg(feature = "transforms-log_to_metric")]
 mod log_to_metric;
 mod logplex;
@@ -161,8 +159,6 @@ pub(crate) use self::internal_logs::*;
 pub(crate) use self::journald::*;
 #[cfg(any(feature = "sources-kafka", feature = "sinks-kafka"))]
 pub(crate) use self::kafka::*;
-#[cfg(feature = "sources-kubernetes_logs")]
-pub(crate) use self::kubernetes_logs::*;
 #[cfg(feature = "transforms-log_to_metric")]
 pub(crate) use self::log_to_metric::*;
 #[cfg(feature = "sources-heroku_logs")]
@@ -177,8 +173,6 @@ pub(crate) use self::parser::*;
 pub(crate) use self::postgresql_metrics::*;
 #[cfg(any(feature = "sinks-pulsar", feature = "sources-pulsar"))]
 pub(crate) use self::pulsar::*;
-#[cfg(feature = "sources-redis")]
-pub(crate) use self::redis::*;
 #[cfg(feature = "transforms-impl-reduce")]
 pub(crate) use self::reduce::*;
 #[cfg(feature = "transforms-remap")]
