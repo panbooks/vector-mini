@@ -16,9 +16,6 @@ mod ready_arrays;
 mod running;
 mod task;
 
-#[cfg(test)]
-mod test;
-
 use std::{
     panic::AssertUnwindSafe,
     sync::{Arc, Mutex},
