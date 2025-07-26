@@ -22,10 +22,6 @@ mod aws_ecs_metrics;
     feature = "sinks-aws_kinesis_firehose"
 ))]
 mod aws_kinesis;
-#[cfg(feature = "sources-aws_kinesis_firehose")]
-mod aws_kinesis_firehose;
-#[cfg(any(feature = "sources-aws_s3", feature = "sources-aws_sqs",))]
-mod aws_sqs;
 mod batch;
 mod codecs;
 mod common;
@@ -89,8 +85,6 @@ mod metric_to_log;
 mod mongodb_metrics;
 #[cfg(feature = "sinks-mqtt")]
 mod mqtt;
-#[cfg(feature = "sources-nginx_metrics")]
-mod nginx_metrics;
 mod open;
 mod parser;
 #[cfg(feature = "sources-postgresql_metrics")]
@@ -140,9 +134,6 @@ mod window;
 mod file;
 mod windows;
 
-#[cfg(feature = "sources-mongodb_metrics")]
-pub(crate) use mongodb_metrics::*;
-
 #[cfg(feature = "transforms-aggregate")]
 pub(crate) use self::aggregate::*;
 #[cfg(feature = "sources-amqp")]
@@ -155,12 +146,6 @@ pub(crate) use self::api::*;
 pub(crate) use self::aws::*;
 #[cfg(feature = "transforms-aws_ec2_metadata")]
 pub(crate) use self::aws_ec2_metadata::*;
-#[cfg(feature = "sources-aws_ecs_metrics")]
-pub(crate) use self::aws_ecs_metrics::*;
-#[cfg(feature = "sources-aws_kinesis_firehose")]
-pub(crate) use self::aws_kinesis_firehose::*;
-#[cfg(any(feature = "sources-aws_s3", feature = "sources-aws_sqs",))]
-pub(crate) use self::aws_sqs::*;
 pub(crate) use self::codecs::*;
 #[cfg(feature = "sources-datadog_agent")]
 pub(crate) use self::datadog_agent::*;
@@ -170,8 +155,6 @@ pub(crate) use self::dedupe::*;
 pub(crate) use self::demo_logs::*;
 #[cfg(feature = "sources-dnstap")]
 pub(crate) use self::dnstap::*;
-#[cfg(feature = "sources-docker_logs")]
-pub(crate) use self::docker_logs::*;
 #[cfg(feature = "sources-eventstoredb_metrics")]
 pub(crate) use self::eventstoredb_metrics::*;
 #[cfg(feature = "sources-exec")]
@@ -212,8 +195,6 @@ pub(crate) use self::logplex::*;
 pub(crate) use self::lua::*;
 #[cfg(feature = "transforms-metric_to_log")]
 pub(crate) use self::metric_to_log::*;
-#[cfg(feature = "sources-nginx_metrics")]
-pub(crate) use self::nginx_metrics::*;
 #[allow(unused_imports)]
 pub(crate) use self::parser::*;
 #[cfg(feature = "sources-postgresql_metrics")]
