@@ -208,14 +208,10 @@ pub(crate) use self::kubernetes_logs::*;
 pub(crate) use self::log_to_metric::*;
 #[cfg(feature = "sources-heroku_logs")]
 pub(crate) use self::logplex::*;
-#[cfg(feature = "sinks-loki")]
-pub(crate) use self::loki::*;
 #[cfg(feature = "transforms-lua")]
 pub(crate) use self::lua::*;
 #[cfg(feature = "transforms-metric_to_log")]
 pub(crate) use self::metric_to_log::*;
-#[cfg(feature = "sinks-mqtt")]
-pub(crate) use self::mqtt::*;
 #[cfg(feature = "sources-nginx_metrics")]
 pub(crate) use self::nginx_metrics::*;
 #[allow(unused_imports)]
@@ -240,8 +236,6 @@ pub(crate) use self::remap::*;
 pub(crate) use self::sample::*;
 #[cfg(any(feature = "sources-splunk_hec", feature = "sinks-splunk_hec"))]
 pub(crate) use self::splunk_hec::*;
-#[cfg(feature = "sinks-statsd")]
-pub(crate) use self::statsd_sink::*;
 #[cfg(feature = "transforms-tag_cardinality_limit")]
 pub(crate) use self::tag_cardinality_limit::*;
 #[cfg(feature = "transforms-throttle")]
