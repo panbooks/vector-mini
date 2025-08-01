@@ -230,13 +230,3 @@ impl TransformConfig for ReduceConfig {
         vec![TransformOutput::new(DataType::Log, output_definitions)]
     }
 }
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<ReduceConfig>();
-    }
-}

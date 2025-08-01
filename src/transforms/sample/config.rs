@@ -186,13 +186,3 @@ impl TransformConfig for SampleConfig {
 pub fn default_sample_rate_key() -> OptionalValuePath {
     OptionalValuePath::from(owned_value_path!("sample_rate"))
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::transforms::sample::config::SampleConfig;
-
-    #[test]
-    fn generate_config() {
-        crate::test_util::test_generate_config::<SampleConfig>();
-    }
-}

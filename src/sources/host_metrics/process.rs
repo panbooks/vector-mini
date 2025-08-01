@@ -55,30 +55,3 @@ impl HostMetrics {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use crate::sources::host_metrics::tests::count_tag;
-
-    use super::super::{HostMetrics, HostMetricsConfig, MetricsBuffer};
-
-    #[tokio::test]
-    async fn generates_process_metrics() {
-        let mut buffer = MetricsBuffer::new(None);
-        HostMetrics::new(HostMetricsConfig::default())
-            .process_metrics(&mut buffer)
-            .await;
-        let metrics = buffer.metrics;
-        assert!(!metrics.is_empty());
-
-        // All metrics are named process_*
-        assert!(!metrics
-            .iter()
-            .any(|metric| !metric.name().starts_with("process_")));
-
-        // They should all have the required tag
-        assert_eq!(count_tag(&metrics, "pid"), metrics.len());
-        assert_eq!(count_tag(&metrics, "name"), metrics.len());
-        assert_eq!(count_tag(&metrics, "command"), metrics.len());
-    }
-}

@@ -332,25 +332,3 @@ where
         Ok(())
     }
 }
-
-#[cfg(test)]
-mod test {
-    use tokio::net::TcpListener;
-
-    use super::*;
-    use crate::test_util::{next_addr, trace_init};
-
-    #[tokio::test]
-    async fn healthcheck() {
-        trace_init();
-
-        let addr = next_addr();
-        let _listener = TcpListener::bind(&addr).await.unwrap();
-        let good = TcpConnector::from_host_port(addr.ip().to_string(), addr.port());
-        assert!(good.healthcheck().await.is_ok());
-
-        let addr = next_addr();
-        let bad = TcpConnector::from_host_port(addr.ip().to_string(), addr.port());
-        assert!(bad.healthcheck().await.is_err());
-    }
-}

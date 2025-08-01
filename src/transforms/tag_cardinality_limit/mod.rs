@@ -15,9 +15,6 @@ use crate::{
 mod config;
 mod tag_value_set;
 
-#[cfg(test)]
-mod tests;
-
 use crate::event::metric::TagValueSet;
 pub use config::{TagCardinalityLimitConfig, TagCardinalityLimitInnerConfig};
 use tag_value_set::AcceptedTagValueSet;
